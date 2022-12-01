@@ -6,9 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 // import 'package:modal_progress_hud/modal_progress_hud.dart';
 // import 'components/rounded_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password
-
+// var db = FirebaseFirestore.instance;
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
   hintStyle: TextStyle(color: Colors.grey),
@@ -35,6 +36,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
+  late String name;
+  late String phone;
+  late String? type = "customer";
   bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
@@ -48,6 +52,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              TextField(
+                  keyboardType: TextInputType.name,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your name')),
+              const SizedBox(
+                height: 8.0,
+              ),
+              TextField(
+                  keyboardType: TextInputType.phone,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    phone = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your phone')),
+              const SizedBox(
+                height: 8.0,
+              ),
               TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -70,6 +96,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(
                 height: 24.0,
               ),
+              RadioListTile(
+                  value: "seller",
+                  groupValue: type,
+                  onChanged: (value) {
+                    setState(() {
+                      type = value.toString();
+                    });
+                  }),
+              RadioListTile(
+                  value: "customer",
+                  groupValue: type,
+                  onChanged: (value) {
+                    setState(() {
+                      type = value.toString();
+                    });
+                  }),
               RoundedButton(
                 colour: Colors.blueAccent,
                 title: 'Register',
@@ -80,6 +122,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
+
+                    final info = <String, dynamic>{
+                      "name": name,
+                      "email": email,
+                      "phone": phone,
+                      "password": password,
+                      "type": type
+                    };
+                    await FirebaseFirestore.instance
+                        .collection("login")
+                        .doc(email)
+                        .set(info);
+
                     if (newUser != null) {
                       Navigator.pushNamed(context, 'product_screen');
                     }
