@@ -42,6 +42,8 @@ dependencies:
   # google_fonts: ^3.0.1
   modal_progress_hud_nsn: ^0.3.0
   cloud_firestore: ^4.1.0
+  flutter_login: ^4.1.1
+  firebase_messaging: ^14.2.1
   # cloud_firestore: ^4.1.0
   # cloud_firestore: ^4.0.5
   # cloud_firestore: 

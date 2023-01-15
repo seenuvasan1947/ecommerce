@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, unnecessary_null_comparison, use_build_context_synchronously, avoid_print
 
 import 'package:ecommerce/login/components/rounded_button.dart';
+import 'package:ecommerce/login/screen/userdetail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'components/rounded_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -84,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       final user = await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
                       if (user != null) {
-                        Navigator.pushNamed(context, 'product_screen');
+                         Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const detailpage()));
+                        
                       }
                     } catch (e) {
                       print(e);
