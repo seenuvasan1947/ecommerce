@@ -38,7 +38,7 @@ class DetailsScreen extends StatelessWidget {
       ),
       actions: <Widget>[
         IconButton(
-          icon: const Icon(Icons.card_travel),
+          icon: const Icon(Icons.shopping_cart),
           onPressed: () {},
         ),
       ],
